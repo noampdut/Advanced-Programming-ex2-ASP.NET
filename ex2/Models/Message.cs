@@ -7,9 +7,9 @@ namespace ex2.Models
 {
     public class Message
     {
-        public int Id { get; set; }
-        public string Content { get; set; }
-        public string Date { get; set; }
+        public int id { get; set; }
+        public string content { get; set; }
+        public string created { get; set; }
         public bool sent { get; set; }
     }
 }

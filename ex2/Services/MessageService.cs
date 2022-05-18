@@ -21,14 +21,14 @@ namespace ex2.Services
 
         public Message Get(int id)
         {
-            return messages.Find(x => x.Id == id);
+            return messages.Find(x => x.id == id);
         }
 
         public void Edit(Message message)
         {
-            Message temp = messages.Find(x => x.Id == message.Id);
-            temp.Date = DateTime.Now.ToString();
-            temp.Content = message.Content;
+            Message temp = messages.Find(x => x.id == message.id);
+            temp.created = DateTime.Now.ToString();
+            temp.content = message.content;
         }
         public void Delete(int id)
         {
@@ -41,13 +41,13 @@ namespace ex2.Services
             int nextId;
             if (messages.Count != 0)
             {
-                nextId = messages.Max(x => x.Id) + 1;
+                nextId = messages.Max(x => x.id) + 1;
             }
             else
             {
                 nextId = 1;
             }
-            Message message = new Message() { Id = nextId, Content = content, Date = DateTime.Now.ToString(), sent = sent };
+            Message message = new Message() { id = nextId, content = content, created = DateTime.Now.ToString(), sent = sent };
             messages.Add(message);
         }
     }

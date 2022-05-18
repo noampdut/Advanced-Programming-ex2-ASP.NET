@@ -19,46 +19,89 @@ namespace ex2.Controllers
         public ContactsController()
         {
             //List<Contact> contactList = new List<Contact> { };
-            Message message = new Message() { Id = 1, Date = "today", sent = true, Content = "yesss" };
+            Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
             List<Message> listMessages = new List<Message> { message };
-            contactList.Add(new Contact { Id = "Lilach", LastDate = "today", LastMessage = "by", NickName = "lilach", Picture = "", messages = listMessages, Service = "fds"});
+            contactList.Add(new Contact { id = "Lilach", lastDate = "today", last = "by", name = "lilach", messages = listMessages, server = "fds"});
             user = new User() { Id = "NoamPdut", NickName = "Noamit", Password = "n123456", Picture = "", Contacts = contactList };
             //userService = new UserService(tempUser);
             contactsService = new ContactService(user.Contacts);
         }
+        private dynamic fixContact(Contact contact)
+        {
+            if (contact == null)
+            {
+                return (new { });
+            }
+            var temp = new
+            {
+                id = contact.id,
+                name = contact.name,
+                server = contact.server,
+                last = contact.last,
+                lastDate = contact.lastDate
+            };
+            return temp;
+        }
         [HttpGet]
         public IActionResult Index()
         {
-            return Json(contactsService.GetAll());
+            List<Contact> contactsList = contactsService.GetAll();
+            List<dynamic> returnContacts = new List<dynamic> { };
+            if (contactsList != null)
+            {
+                for (int i = 0; i < contactsList.Count; i++)
+                {
+                    returnContacts.Add(fixContact(contactsList[i]));
+                }
+                return Json(returnContacts);
+            }else {
+                return Json(new EmptyResult());
+            }    
         }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult Create(string nickName, string id, string service)
+        public IActionResult Create(string id, string name, string server)
         {
-            contactsService.Add(nickName, id, service);
-            return Json(new EmptyResult());
+            contactsService.Add(name, id, server);
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public IActionResult Details(string id)
         {
-            return Json(contactsService.Get(id));
+            Contact contact = contactsService.Get(id);
+
+            return Json(fixContact(contact));
         }
         [HttpPut("{id}")]
-        public void Edit( string nickName, string id, string service)
+        public IActionResult Edit(string id, string name, string server)
         {
             Contact temp = contactsService.Get(id);
-            temp.NickName = nickName;
-            temp.Service = service;
-            contactsService.Edit(temp);
+            if (temp != null)
+            {
+                temp.name = name;
+                temp.server = server;
+                contactsService.Edit(temp);
+                return StatusCode(204);
+            } else
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]
-        [ValidateAntiForgeryToken]
-        public void Delete(string id)
+        //[ValidateAntiForgeryToken]
+        public IActionResult Delete(string id)
         {
-            contactsService.Delete(id);
+            bool returnValue = contactsService.Delete(id);
+            if (returnValue == false)
+            {
+                return NotFound();
+            } else
+            {
+                return StatusCode(204);
+            }
         }
 
         // Get: api/contacts/id/messages
@@ -75,21 +118,21 @@ namespace ex2.Controllers
             Contact contact = contactsService.Get(id);
             if (contact == null)
             {
-                return Json(new EmptyResult());
+                return NotFound();
             }
             string Date = DateTime.Now.ToString();
             int nextId;
             if (contact.messages.Count != 0)
             {
-                nextId = contact.messages.Max(x => x.Id) + 1;
+                nextId = contact.messages.Max(x => x.id) + 1;
             }
             else
             {
                 nextId = 1;
             }
-            Message message = new Message() { Id = nextId, Content = content, Date = Date, sent = true };
+            Message message = new Message() { id = nextId, content = content, created = Date, sent = true };
             contact.messages.Add(message);
-            return Json(new EmptyResult());
+            return StatusCode(201);
         }
 
         // Get: api/contacts/id/messages/id2
@@ -97,27 +140,60 @@ namespace ex2.Controllers
         public IActionResult getMessage(string id1, int id2)
         {
             Contact contact = contactsService.Get(id1);
-            Message message = contact.messages.Find(x => x.Id == id2);
-
-            return Json(message);
+            if (contact != null)
+            {
+                Message message = contact.messages.Find(x => x.id == id2);
+                if (message != null)
+                {
+                    return Json(message);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            return NotFound();
         }
 
         // Put: api/contacts/id/messages/id2
         [HttpPut("{id1}/Messages/{id2}"), ActionName("Messages")]
-        public void editMessage(string id1, int id2, string content)
+        public IActionResult editMessage(string id1, int id2, string content)
         {
             Contact contact = contactsService.Get(id1);
-            Message message = contact.messages.Find(x => x.Id == id2);
-            message.Content = content;
-            message.Date = DateTime.Now.ToString();
+            if (contact != null)
+            {
+                Message message = contact.messages.Find(x => x.id == id2);
+                if (message != null)
+                {
+                    message.content = content;
+                    message.created = DateTime.Now.ToString();
+                    return StatusCode(204);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            return NotFound();
+            
         }
 
         // Delete: api/contacts/id/messages/id2
         [HttpDelete("{id1}/Messages/{id2}"), ActionName("Messages")]
-        public void deleteMessage(string id1, int id2) {
+        public IActionResult deleteMessage(string id1, int id2) {
             Contact contact = contactsService.Get(id1);
-            Message message = contact.messages.Find(x => x.Id == id2);
-            contact.messages.Remove(message);
+            if (contact != null)
+            {
+                Message message = contact.messages.Find(x => x.id == id2);
+                if (message != null)
+                {
+                    contact.messages.Remove(message);
+                    return StatusCode(204);
+
+                }
+                return NotFound();
+            }
+            return NotFound();
         }
     }
 }

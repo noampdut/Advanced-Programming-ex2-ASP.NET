@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lilac\\OneDrive\\Desktop\\projects\\Advanced-Programming-2-\\ex2\\ex2\\ex2\\ex2.csproj": {}
+    "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lilac\\OneDrive\\Desktop\\projects\\Advanced-Programming-2-\\ex2\\ex2\\ex2\\ex2.csproj": {
+    "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lilac\\OneDrive\\Desktop\\projects\\Advanced-Programming-2-\\ex2\\ex2\\ex2\\ex2.csproj",
+        "projectUniqueName": "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj",
         "projectName": "ex2",
-        "projectPath": "C:\\Users\\lilac\\OneDrive\\Desktop\\projects\\Advanced-Programming-2-\\ex2\\ex2\\ex2\\ex2.csproj",
+        "projectPath": "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj",
         "packagesPath": "C:\\Users\\lilac\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lilac\\OneDrive\\Desktop\\projects\\Advanced-Programming-2-\\ex2\\ex2\\ex2\\obj\\",
+        "outputPath": "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lilac\\AppData\\Roaming\\NuGet\\NuGet.Config",
