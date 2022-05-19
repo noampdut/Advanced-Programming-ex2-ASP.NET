@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ex2.Data;
+using ex2.Services;
 
 namespace ex2
 {
@@ -26,6 +27,7 @@ namespace ex2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IUsersService, UsersService>();
 
             services.AddDbContext<ex2Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ex2Context")));

@@ -10,7 +10,6 @@ namespace ex2.Services
     {
         public List<Contact> GetAll();
         public Contact Get(string id);
-
         public void Edit(Contact contact);
         public bool Delete(string id);
         public void Add(string nickName, string id, string service);

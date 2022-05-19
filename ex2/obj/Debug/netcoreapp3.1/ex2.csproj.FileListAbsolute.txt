@@ -333,8 +333,6 @@ C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\ex2.Razor
 C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\ex2.TagHelpers.input.cache
 C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\ex2.TagHelpers.output.cache
 C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\ex2.RazorCoreGenerate.cache
-C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\Razor\Views\Rates\Create.cshtml.g.cs
 C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\Razor\Views\Rates\Delete.cshtml.g.cs
 C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\obj\Debug\netcoreapp3.1\Razor\Views\Rates\Details.cshtml.g.cs

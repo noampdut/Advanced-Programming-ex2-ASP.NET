@@ -12,19 +12,21 @@ namespace ex2.Controllers
     public class ContactsController : Controller
     {
         //private IUserService userService;
-        private User user;
+        //private User user;
+        private IUsersService userService;
         private IContactService contactsService;
-        static List<Contact> contactList = new List<Contact> { };
+        //static List<Contact> contactList = new List<Contact> { };
 
-        public ContactsController()
+        public ContactsController(IUsersService usersService)
         {
+            userService = usersService;
             //List<Contact> contactList = new List<Contact> { };
-            Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
-            List<Message> listMessages = new List<Message> { message };
-            contactList.Add(new Contact { id = "Lilach", lastDate = "today", last = "by", name = "lilach", messages = listMessages, server = "fds"});
-            user = new User() { Id = "NoamPdut", NickName = "Noamit", Password = "n123456", Picture = "", Contacts = contactList };
+            //Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
+            //List<Message> listMessages = new List<Message> { message };
+            //contactList.Add(new Contact { id = "Lilach", lastDate = "today", last = "by", name = "lilach", messages = listMessages, server = "fds"});
+            //user = new User() { Id = "NoamPdut", NickName = "Noamit", Password = "n123456", Picture = "", Contacts = contactList };
             //userService = new UserService(tempUser);
-            contactsService = new ContactService(user.Contacts);
+            contactsService = new ContactService(userService.GetActiveUser().Contacts);
         }
         private dynamic fixContact(Contact contact)
         {
@@ -84,8 +86,7 @@ namespace ex2.Controllers
                 temp.server = server;
                 contactsService.Edit(temp);
                 return StatusCode(204);
-            } else
-            {
+            } else {
                 return NotFound();
             }
         }

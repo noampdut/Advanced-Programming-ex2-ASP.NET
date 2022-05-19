@@ -1,17 +1,16 @@
 ﻿using ex2.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ex2.Services
 {
     public class ContactService : IContactService
     {
         private static List<Contact> contacts;
-        public ContactService(List<Contact> contactsList)
+
+        public ContactService(List<Contact> contactList)
         {
-            contacts = contactsList;
+            contacts = contactList;
         }
 
         public List<Contact> GetAll()
@@ -34,7 +33,7 @@ namespace ex2.Services
         public bool Delete(string id)
         {
             Contact contact = Get(id);
-            if(contact != null)
+            if (contact != null)
             {
                 contacts.Remove(contact);
                 return true;
@@ -43,12 +42,12 @@ namespace ex2.Services
             {
                 return false;
             }
-            
+
         }
 
         public void Add(string nickName, string id, string service)
         {
-            Contact contact = new Contact() { id = id, last = "", lastDate = "", name = nickName, server = service, messages = new List<Message> { }};
+            Contact contact = new Contact() { id = id, last = "", lastDate = "", name = nickName, server = service, messages = new List<Message> { } };
             contacts.Add(contact);
         }
     }
