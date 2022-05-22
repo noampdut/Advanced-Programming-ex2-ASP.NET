@@ -12,9 +12,10 @@ namespace ex2.Services
         {
             List<Contact> contactList = new List<Contact> { };
             Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
-            List<Message> messages = new List<Message>() { message };
-            contactList.Add(new Contact { id = "Lilach", lastDate = "today", last = "by", name = "lilach", messages = messages, server = "fds"});
-            contactList.Add(new Contact { id = "OfekForn", lastDate = "today", last = "by", name = "ofek", messages = messages, server = "fds"});
+            List<Message> messages1 = new List<Message>() { message };
+            List<Message> messages2 = new List<Message>() { message };
+            contactList.Add(new Contact { id = "lilach", lastDate = "today", last = "by", name = "lilach", messages = messages1, server = "fds"});
+            contactList.Add(new Contact { id = "ofek", lastDate = "today", last = "by", name = "ofek", messages = messages2, server = "fds"});
             
             User user = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = contactList };
 
@@ -26,6 +27,13 @@ namespace ex2.Services
         {
             return usersList;
         }
+
+
+        public User Get(string id)
+        {
+            return usersList.Find(x => x.Id == id);
+        }
+
         public User GetActiveUser()
         {
             return acticeUser;

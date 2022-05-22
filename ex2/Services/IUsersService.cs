@@ -14,5 +14,6 @@ namespace ex2.Services
         public void Add(string id, string nickName, string pwd, string service);
         public void setActiveUser(string userName);
         public bool isSigned(string userName);
+        public User Get(string id);
     }
 }
