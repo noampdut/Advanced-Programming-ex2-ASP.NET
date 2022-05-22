@@ -65,8 +65,12 @@ namespace ex2.Controllers
         //[ValidateAntiForgeryToken]
         public IActionResult Create(string id, string name, string server)
         {
-            contactsService.Add(name, id, server);
-            return Ok();
+            if (contactsService.Get(id) == null && userService.GetActiveUser().Id != id)
+            {
+                contactsService.Add(name, id, server);
+                return StatusCode(201);
+            }
+            return NotFound();
         }
 
         [HttpGet("{id}")]
@@ -131,8 +135,10 @@ namespace ex2.Controllers
             {
                 nextId = 1;
             }
-            Message message = new Message() { id = nextId, content = content, created = Date, sent = true };
+            Message message = new Message() { id = nextId, content = content, created = Date, sent = false };
             contact.messages.Add(message);
+            contact.last = message.content;
+            contact.lastDate = message.created;
             return StatusCode(201);
         }
 

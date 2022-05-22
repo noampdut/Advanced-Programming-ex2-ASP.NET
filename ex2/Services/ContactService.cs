@@ -50,5 +50,6 @@ namespace ex2.Services
             Contact contact = new Contact() { id = id, last = "", lastDate = "", name = nickName, server = service, messages = new List<Message> { } };
             contacts.Add(contact);
         }
+
     }
 }
