@@ -17,10 +17,12 @@ namespace ex2.Services
             contactList.Add(new Contact { id = "lilach", lastDate = "today", last = "by", name = "lilach", messages = messages1, server = "fds"});
             contactList.Add(new Contact { id = "ofek", lastDate = "today", last = "by", name = "ofek", messages = messages2, server = "fds"});
             
-            User user = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = contactList };
+            User user1 = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = contactList };
+            User user2 = new User() { Id = "ofek", NickName = "ofek", Password = "n123456", Contacts = new List<Contact> { } };
 
-            usersList.Add(user);
-            acticeUser = user; 
+            usersList.Add(user1);
+            usersList.Add(user2);
+            acticeUser = user2; 
         }
 
         public List<User> GetAll()
