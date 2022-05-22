@@ -22,5 +22,8 @@ namespace ex2
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+    
+
     }
 }

@@ -8,12 +8,12 @@ namespace ex2.Models
     public class Contact
     {
         //public int Id { set; get; }
-        public string Id { set; get; }
-        public string NickName { set; get; }
-        public string LastMessage { set; get; }
-        public string LastDate { set; get; }
-        public string Picture { set; get; }
-        public string Service { set; get; }
+        public string id { set; get; }
+        public string name { set; get; }
+        public string server { set; get; }
+        public string last { set; get; }
+        public string lastDate { set; get; }
+        //public string Picture { set; get; }
         public List<Message> messages { set; get; }
     }
 }

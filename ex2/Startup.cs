@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ex2.Data;
+using ex2.Services;
 
 namespace ex2
 {
@@ -25,7 +26,17 @@ namespace ex2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(option =>
+            {
+                option.AddPolicy("Allow All", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+
+            });
+
             services.AddControllersWithViews();
+            services.AddSingleton<IUsersService, UsersService>();
 
             services.AddDbContext<ex2Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ex2Context")));
@@ -44,10 +55,13 @@ namespace ex2
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors("Allow All");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+            //app.UseCors("Allow All");
 
             app.UseAuthorization();
 
@@ -57,6 +71,10 @@ namespace ex2
                     name: "default",
                     pattern: "{controller=Rates}/{action=Index}/{id?}");
             });
+
+            
         }
+
+       
     }
 }

@@ -10,7 +10,7 @@ namespace ex2.Models
         //public int Id { set; get; }
         public string Id { set; get; }
         public string NickName { set; get; }
-        public string Picture { set; get; }
+        //public string Picture { set; get; }
         public string Password { set; get; }
         public List<Contact> Contacts { set; get; }
     }

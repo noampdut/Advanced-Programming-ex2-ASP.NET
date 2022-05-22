@@ -1,43 +1,53 @@
 ﻿using ex2.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ex2.Services
 {
     public class ContactService : IContactService
     {
         private static List<Contact> contacts;
-        public ContactService(List<Contact> contactsList)
+
+        public ContactService(List<Contact> contactList)
         {
-            contacts = contactsList;
+            contacts = contactList;
         }
+
         public List<Contact> GetAll()
         {
+
             return contacts;
         }
 
         public Contact Get(string id)
         {
-            return contacts.Find(x => x.Id == id);
+            return contacts.Find(x => x.id == id);
         }
 
         public void Edit(Contact contact)
         {
-            Contact temp = contacts.Find(x => x.Id == contact.Id);
-            temp.LastDate = DateTime.Now.ToString();
-            temp.LastMessage = contact.LastMessage;
+            Contact temp = contacts.Find(x => x.id == contact.id);
+            temp.lastDate = DateTime.Now.ToString();
+            temp.last = contact.last;
         }
-        public void Delete(string id)
+        public bool Delete(string id)
         {
             Contact contact = Get(id);
-            contacts.Remove(contact);
+            if (contact != null)
+            {
+                contacts.Remove(contact);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public void Add(string nickName, string id, string service)
         {
-            Contact contact = new Contact() { Id = id, LastMessage = "", LastDate = "", NickName = nickName, Service = service, messages = new List<Message> { }, Picture = ""};
+            Contact contact = new Contact() { id = id, last = "", lastDate = "", name = nickName, server = service, messages = new List<Message> { } };
             contacts.Add(contact);
         }
     }
