@@ -9,6 +9,6 @@ namespace ex2.Services
         public Rate Get(int id);
         public void Edit(Rate rate);
         public void Delete(int id);
-        public void Add(string text, int score);
+        public void Add(string text, int score, string activeUser);
     }
 }

@@ -17,11 +17,7 @@ namespace ex2.Models
         [Required]
         [StringLength(150)]
         public string Text { get; set; }
-
         public string UserName { get; set; }
-
-        public int UserId { get; set; }
-
         public string Date { get; set; }
     }
 }

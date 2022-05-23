@@ -37,6 +37,7 @@ namespace ex2
 
             services.AddControllersWithViews();
             services.AddSingleton<IUsersService, UsersService>();
+            services.AddSingleton<IRateService, RateService>();
 
             services.AddDbContext<ex2Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ex2Context")));

@@ -13,31 +13,33 @@ namespace ex2.Controllers
 {
     public class RatesController : Controller
     {
-        private IRateService service;
+        private IRateService rateService;
+        private IUsersService userService;
         private float currentRate;
 
-        public RatesController() {
-            service = new RateService();
+        public RatesController(IUsersService usersService, IRateService ratesService) {
+            rateService = ratesService;
+            userService = usersService;
         }
 
         // GET: Rates
         public IActionResult Index() {
-            List<Rate> rates = service.GetAll();
+            List<Rate> rates = rateService.GetAll();
             float rate = 0;
             int numOfRates = rates.Count;
-            
-            for (int i = 0; i<numOfRates; i++)
+
+            for (int i = 0; i < numOfRates; i++)
             {
                 rate += rates[i].Score;
             }
-            if(numOfRates == 0)
+            if (numOfRates == 0)
             {
                 rate = 0;
             }
             else
             {
                 rate = rate / numOfRates;
-            } 
+            }
             ViewData["Message"] = rate;
             currentRate = rate;
             return View(rates);
@@ -45,14 +47,14 @@ namespace ex2.Controllers
         [HttpPost]
         public IActionResult Index(string query)
         {
-            List<Rate> rates = service.GetAll();
+            List<Rate> rates = rateService.GetAll();
             if (rates == null)
             {
                 ViewData["Message"] = currentRate;
                 return View(rates);
             }
             List<Rate> filterRates = new List<Rate>();
-            for (int i = 0; i<rates.Count; i++)
+            for (int i = 0; i < rates.Count; i++)
             {
                 if (rates[i].Text.Contains(query))
                 {
@@ -66,7 +68,7 @@ namespace ex2.Controllers
         // GET: Rates/Details/5
         public IActionResult Details(int id)
         {
-            return View(service.Get(id));
+            return View(rateService.Get(id));
         }
 
         // GET: Rates/Create
@@ -82,7 +84,7 @@ namespace ex2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(int score, string text)
         {
-            service.Add(text, score);
+            rateService.Add(text, score, userService.GetActiveUser().Id);
             return RedirectToAction(nameof(Index));
 
         }
@@ -90,8 +92,15 @@ namespace ex2.Controllers
         // GET: Rates/Edit/5
         public IActionResult Edit(int id)
         {
-
-            return View(service.Get(id));
+            Rate rate = rateService.Get(id);
+            if (rate.UserName == userService.GetActiveUser().Id)
+            {
+                return View(rateService.Get(id));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // POST: Rates/Edit/5
@@ -99,34 +108,52 @@ namespace ex2.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Score,Text,UserName,UserId,Date")] Rate rate)
+        public IActionResult Edit(int id, [Bind("Score,Text")] Rate rate)
         {
-            if (ModelState.IsValid)
+            Rate rate1 = rateService.Get(id);
+            if (rate1.UserName == userService.GetActiveUser().Id)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    service.Edit(rate);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RateExists(rate.Id))
+                    try
                     {
-                        return NotFound();
+                        rate1.Score = rate.Score;
+                        rate1.Text = rate.Text;
+                        rateService.Edit(rate1);
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!RateExists(rate.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
+                return View(rate);
+            }
+            else
+            {
                 return RedirectToAction(nameof(Index));
             }
-            return View(rate);
         }
 
         // GET: Rates/Delete/5
         public IActionResult Delete(int id)
         {
-            return View(service.Get(id));
+            Rate rate = rateService.Get(id);
+            if (rate.UserName == userService.GetActiveUser().Id)
+            {
+                return View(rateService.Get(id));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // POST: Rates/Delete/5
@@ -134,13 +161,22 @@ namespace ex2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            service.Delete(id);
-            return RedirectToAction(nameof(Index));
+            Rate rate = rateService.Get(id);
+            if (rate.UserName == userService.GetActiveUser().Id)
+            {
+                rateService.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+             else
+            {
+                return RedirectToAction(nameof(Index));
+            } 
+            
         }
 
         private bool RateExists(int id)
         {
-            Rate rate = service.Get(id);
+            Rate rate = rateService.Get(id);
             if (rate != null)
             {
                 return true;
