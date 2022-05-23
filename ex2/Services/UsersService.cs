@@ -19,10 +19,12 @@ namespace ex2.Services
             
             User user1 = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = contactList };
             User user2 = new User() { Id = "ofek", NickName = "ofek", Password = "n123456", Contacts = new List<Contact> { } };
+            User user3 = new User() { Id = "naama", NickName = "naama", Password = "n123456", Contacts = new List<Contact> { } };
 
             usersList.Add(user1);
             usersList.Add(user2);
-            acticeUser = user2; 
+            usersList.Add(user3);
+            //acticeUser = user2; 
         }
 
         public List<User> GetAll()
