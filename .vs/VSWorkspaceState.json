@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ex2",
+    "\\ex2\\bin",
+    "\\ex2\\Views\\Rates"
   ],
   "SelectedNode": "\\ex2.sln",
   "PreviewInSolutionExplorer": false
