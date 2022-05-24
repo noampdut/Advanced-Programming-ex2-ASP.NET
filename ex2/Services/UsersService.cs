@@ -24,7 +24,7 @@ namespace ex2.Services
             usersList.Add(user1);
             usersList.Add(user2);
             usersList.Add(user3);
-            //acticeUser = user2; 
+            //acticeUser = user1; 
         }
 
         public List<User> GetAll()

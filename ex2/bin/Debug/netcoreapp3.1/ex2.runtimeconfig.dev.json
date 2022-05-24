@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\noamp\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\noamp\\.nuget\\packages"
+      "C:\\Users\\lilac\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\lilac\\.nuget\\packages"
     ]
   }
 }

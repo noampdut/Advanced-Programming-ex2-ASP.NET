@@ -74,6 +74,10 @@ namespace ex2.Controllers
         // GET: Rates/Create
         public IActionResult Create()
         {
+            if (userService.GetActiveUser() == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
@@ -84,6 +88,10 @@ namespace ex2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(int score, string text)
         {
+            if (userService.GetActiveUser() == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             rateService.Add(text, score, userService.GetActiveUser().Id);
             return RedirectToAction(nameof(Index));
 
@@ -93,6 +101,10 @@ namespace ex2.Controllers
         public IActionResult Edit(int id)
         {
             Rate rate = rateService.Get(id);
+            if (userService.GetActiveUser() == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             if (rate.UserName == userService.GetActiveUser().Id)
             {
                 return View(rateService.Get(id));
@@ -111,6 +123,10 @@ namespace ex2.Controllers
         public IActionResult Edit(int id, [Bind("Score,Text")] Rate rate)
         {
             Rate rate1 = rateService.Get(id);
+            if (userService.GetActiveUser() == null)
+            {
+                RedirectToAction(nameof(Index));
+            }
             if (rate1.UserName == userService.GetActiveUser().Id)
             {
                 if (ModelState.IsValid)
@@ -145,6 +161,10 @@ namespace ex2.Controllers
         // GET: Rates/Delete/5
         public IActionResult Delete(int id)
         {
+            if (userService.GetActiveUser() == null)
+            {
+                RedirectToAction(nameof(Index));
+            }
             Rate rate = rateService.Get(id);
             if (rate.UserName == userService.GetActiveUser().Id)
             {
@@ -162,6 +182,10 @@ namespace ex2.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             Rate rate = rateService.Get(id);
+            if (userService.GetActiveUser() == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             if (rate.UserName == userService.GetActiveUser().Id)
             {
                 rateService.Delete(id);

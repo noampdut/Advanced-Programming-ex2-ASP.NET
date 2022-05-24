@@ -527,3 +527,4 @@ C:\Users\noamp\source\repos\Advanced-Programming-ex2-ASP.NET\ex2\obj\Debug\netco
 C:\Users\noamp\source\repos\Advanced-Programming-ex2-ASP.NET\ex2\obj\Debug\netcoreapp3.1\ex2.pdb
 C:\Users\noamp\source\repos\Advanced-Programming-ex2-ASP.NET\ex2\obj\Debug\netcoreapp3.1\ex2.genruntimeconfig.cache
 C:\Users\noamp\source\repos\Advanced-Programming-ex2-ASP.NET\ex2\bin\Debug\netcoreapp3.1\libman.json
+C:\Users\lilac\OneDrive\Desktop\ex2 ASPNET\ex2\bin\Debug\netcoreapp3.1\libman.json
