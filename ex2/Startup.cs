@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ex2.Data;
 using ex2.Services;
+using ex2.Hubs;
 
 namespace ex2
 {
@@ -34,7 +35,7 @@ namespace ex2
                 });
 
             });
-
+            services.AddSignalR();
             services.AddControllersWithViews();
             services.AddSingleton<IUsersService, UsersService>();
             services.AddSingleton<IRateService, RateService>();
@@ -69,8 +70,11 @@ namespace ex2
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Rates}/{action=Index}/{id?}");
+                   name: "default",
+                 pattern: "{controller=Rates}/{action=Index}/{id?}");
+
+                endpoints.MapHub<MyHub>("/myHub");
+
             });
 
             
