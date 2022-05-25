@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj": {}
+    "C:\\Users\\noamp\\Source\\Repos\\Advanced-Programming-ex2-ASP.NET\\ex2\\ex2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj": {
+    "C:\\Users\\noamp\\Source\\Repos\\Advanced-Programming-ex2-ASP.NET\\ex2\\ex2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj",
+        "projectUniqueName": "C:\\Users\\noamp\\Source\\Repos\\Advanced-Programming-ex2-ASP.NET\\ex2\\ex2.csproj",
         "projectName": "ex2",
-        "projectPath": "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\ex2.csproj",
-        "packagesPath": "C:\\Users\\lilac\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lilac\\OneDrive\\Desktop\\ex2 ASPNET\\ex2\\obj\\",
+        "projectPath": "C:\\Users\\noamp\\Source\\Repos\\Advanced-Programming-ex2-ASP.NET\\ex2\\ex2.csproj",
+        "packagesPath": "C:\\Users\\noamp\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\noamp\\Source\\Repos\\Advanced-Programming-ex2-ASP.NET\\ex2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lilac\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\noamp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,6 +26,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -37,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
@@ -79,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

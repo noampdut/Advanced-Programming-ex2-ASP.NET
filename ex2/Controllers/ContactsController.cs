@@ -148,19 +148,20 @@ namespace ex2.Controllers
 
         // Get: api/contacts/user/id/messages
         [HttpGet("{id}/Messages"), ActionName("Messages")]
-        public IActionResult getMessages(string user, string id)
+        public IActionResult getMessages(string id,string user)
         {
             User activeUser = userService.Get(user);
             if (activeUser == null)
             {
                 return NotFound();
             }
-            contactsService = new ContactService(activeUser.Contacts);
-            Contact contact = contactsService.Get(id);
-            return Json(contact.messages);
+            //contactsService = new ContactService(activeUser.Contacts);
+            //Contact contact = contactsService.Get(id);
+           // return Json(contact.messages);
+            return Json(activeUser.Contacts.Find(x => x.id == id).messages);
         }
 
-        [HttpPost("user/{id}/Messages"), ActionName("Messages")]
+        [HttpPost("{user}/{id}/Messages"), ActionName("Messages")]
         public IActionResult createMessage(string user, string id, string content)
         {
             User activeUser = userService.Get(user);
@@ -192,7 +193,7 @@ namespace ex2.Controllers
         }
 
         // Get: api/contacts/id/messages/id2
-        [HttpGet("user/{id1}/Messages/{id2}"), ActionName("Messages")]
+        [HttpGet("{user}/{id1}/Messages/{id2}"), ActionName("Messages")]
         public IActionResult getMessage(string user, string id1, int id2)
         {
             User activeUser = userService.Get(user);
@@ -218,7 +219,7 @@ namespace ex2.Controllers
         }
 
         // Put: api/contacts/id/messages/id2
-        [HttpPut("user/{id1}/Messages/{id2}"), ActionName("Messages")]
+        [HttpPut("{user}/{id1}/Messages/{id2}"), ActionName("Messages")]
         public IActionResult editMessage(string user, string id1, int id2, string content)
         {
             User activeUser = userService.Get(user);
@@ -247,7 +248,7 @@ namespace ex2.Controllers
         }
 
         // Delete: api/contacts/id/messages/id2
-        [HttpDelete("user/{id1}/Messages/{id2}"), ActionName("Messages")]
+        [HttpDelete("{user}/{id1}/Messages/{id2}"), ActionName("Messages")]
         public IActionResult deleteMessage(string user, string id1, int id2) {
             User activeUser = userService.Get(user);
             if (activeUser == null)
