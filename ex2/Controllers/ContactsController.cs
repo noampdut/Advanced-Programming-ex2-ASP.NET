@@ -26,7 +26,11 @@ namespace ex2.Controllers
             //contactList.Add(new Contact { id = "Lilach", lastDate = "today", last = "by", name = "lilach", messages = listMessages, server = "fds"});
             //user = new User() { Id = "NoamPdut", NickName = "Noamit", Password = "n123456", Picture = "", Contacts = contactList };
             //userService = new UserService(tempUser);
-            contactsService = new ContactService(userService.GetActiveUser().Contacts);
+            //if (userService.GetActiveUser() != null)
+           // {
+            //    contactsService = new ContactService(userService.GetActiveUser().Contacts);
+
+            //}
         }
         private dynamic fixContact(Contact contact)
         {
@@ -45,8 +49,15 @@ namespace ex2.Controllers
             return temp;
         }
         [HttpGet]
-        public IActionResult Index()
+        //api/contacts/user
+        public IActionResult Index(string user)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             List<Contact> contactsList = contactsService.GetAll();
             List<dynamic> returnContacts = new List<dynamic> { };
             if (contactsList != null)
@@ -62,10 +73,17 @@ namespace ex2.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult Create(string id, string name, string server)
+        //create new contact
+        //api/contacts?userId/contactName/contactNickName/contactServer
+        public IActionResult Create(string user,string id, string name, string server)
         {
-            if (contactsService.Get(id) == null && userService.GetActiveUser().Id != id)
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
+            if (contactsService.Get(id) == null && activeUser.Id != id)
             {
                 contactsService.Add(name, id, server);
                 return StatusCode(201);
@@ -74,15 +92,28 @@ namespace ex2.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Details(string id)
+        //api/contacts?userId/contactName
+        public IActionResult Details(string user, string id)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact contact = contactsService.Get(id);
-
             return Json(fixContact(contact));
         }
         [HttpPut("{id}")]
-        public IActionResult Edit(string id, string name, string server)
+        //api/contacts?userId/contactName/contactNickName/contactServer
+        public IActionResult Edit(string user, string id, string name, string server)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact temp = contactsService.Get(id);
             if (temp != null)
             {
@@ -96,9 +127,15 @@ namespace ex2.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[ValidateAntiForgeryToken]
-        public IActionResult Delete(string id)
+        //api/contacts?userId/contactName
+        public IActionResult Delete(string user, string id)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             bool returnValue = contactsService.Delete(id);
             if (returnValue == false)
             {
@@ -109,17 +146,29 @@ namespace ex2.Controllers
             }
         }
 
-        // Get: api/contacts/id/messages
+        // Get: api/contacts/user/id/messages
         [HttpGet("{id}/Messages"), ActionName("Messages")]
-        public IActionResult getMessages(string id)
+        public IActionResult getMessages(string user, string id)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact contact = contactsService.Get(id);
             return Json(contact.messages);
         }
 
-        [HttpPost("{id}/Messages"), ActionName("Messages")]
-        public IActionResult createMessage(string id, string content)
+        [HttpPost("user/{id}/Messages"), ActionName("Messages")]
+        public IActionResult createMessage(string user, string id, string content)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact contact = contactsService.Get(id);
             if (contact == null)
             {
@@ -143,9 +192,15 @@ namespace ex2.Controllers
         }
 
         // Get: api/contacts/id/messages/id2
-        [HttpGet("{id1}/Messages/{id2}"), ActionName("Messages")]
-        public IActionResult getMessage(string id1, int id2)
+        [HttpGet("user/{id1}/Messages/{id2}"), ActionName("Messages")]
+        public IActionResult getMessage(string user, string id1, int id2)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact contact = contactsService.Get(id1);
             if (contact != null)
             {
@@ -163,9 +218,15 @@ namespace ex2.Controllers
         }
 
         // Put: api/contacts/id/messages/id2
-        [HttpPut("{id1}/Messages/{id2}"), ActionName("Messages")]
-        public IActionResult editMessage(string id1, int id2, string content)
+        [HttpPut("user/{id1}/Messages/{id2}"), ActionName("Messages")]
+        public IActionResult editMessage(string user, string id1, int id2, string content)
         {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact contact = contactsService.Get(id1);
             if (contact != null)
             {
@@ -186,8 +247,14 @@ namespace ex2.Controllers
         }
 
         // Delete: api/contacts/id/messages/id2
-        [HttpDelete("{id1}/Messages/{id2}"), ActionName("Messages")]
-        public IActionResult deleteMessage(string id1, int id2) {
+        [HttpDelete("user/{id1}/Messages/{id2}"), ActionName("Messages")]
+        public IActionResult deleteMessage(string user, string id1, int id2) {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            contactsService = new ContactService(activeUser.Contacts);
             Contact contact = contactsService.Get(id1);
             if (contact != null)
             {

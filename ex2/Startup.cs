@@ -31,7 +31,8 @@ namespace ex2
             {
                 option.AddPolicy("Allow All", builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    //builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:3001").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                 });
 
             });
@@ -71,7 +72,7 @@ namespace ex2
             {
                 endpoints.MapControllerRoute(
                    name: "default",
-                 pattern: "{controller=Rates}/{action=Index}/{id?}");
+                 pattern: "{controller=Rates}/{action=Index}/{user=noampdut}/{id?}");
 
                 endpoints.MapHub<MyHub>("/myHub");
 

@@ -6,16 +6,16 @@ namespace ex2.Services
     public class UsersService : IUsersService
     {
         private static List<User> usersList = new List<User> {};
-        private static User acticeUser;
+        //private static User acticeUser;
 
         public UsersService()
         {
             List<Contact> contactList = new List<Contact> { };
-            Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
-            List<Message> messages1 = new List<Message>() { message };
-            List<Message> messages2 = new List<Message>() { message };
-            contactList.Add(new Contact { id = "lilach", lastDate = "today", last = "by", name = "lilach", messages = messages1, server = "fds"});
-            contactList.Add(new Contact { id = "ofek", lastDate = "today", last = "by", name = "ofek", messages = messages2, server = "fds"});
+           // Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
+            //List<Message> messages1 = new List<Message>() { message };
+            //List<Message> messages2 = new List<Message>() { message };
+            //contactList.Add(new Contact { id = "lilach", lastDate = "today", last = "by", name = "lilach", messages = messages1, server = "fds"});
+            //contactList.Add(new Contact { id = "ofek", lastDate = "today", last = "by", name = "ofek", messages = messages2, server = "fds"});
             
             User user1 = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = contactList };
             User user2 = new User() { Id = "ofek", NickName = "ofek", Password = "n123456", Contacts = new List<Contact> { } };
@@ -38,10 +38,10 @@ namespace ex2.Services
             return usersList.Find(x => x.Id == id);
         }
 
-        public User GetActiveUser()
-        {
-            return acticeUser;
-        }
+        //public User GetActiveUser()
+        //{
+         //   return null;
+        //}
         public bool isRegistered(string userName, string pwd)
         {
             if (usersList == null)
@@ -83,16 +83,6 @@ namespace ex2.Services
             usersList.Add(user);
         }
 
-        public void setActiveUser(string userName)
-        {
-            foreach(var user in usersList)
-            {
-                if (user.Id == userName)
-                {
-                    acticeUser = user;
-                    return;
-                }
-            }
-        }
+        
     }
 }

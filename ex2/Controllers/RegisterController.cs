@@ -24,8 +24,9 @@ namespace ex2.Controllers
             if (!returnValue)
             {
                 userService.Add(userName, nickName, pwd, "1234");
-                userService.setActiveUser(userName);
-                return Json(fixUser(userService.GetActiveUser()));
+                //userService.setActiveUser(userName);
+                User user = userService.Get(userName);
+                return Json(fixUser(user));
             }
             else
             {

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ex2.Hubs;
 using ex2.Models;
 using ex2.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ex2.Controllers
 {
@@ -13,12 +15,14 @@ namespace ex2.Controllers
     public class TransferController : Controller
     {
         private IUsersService userService;
-        public TransferController(IUsersService user_Service)
+        private IHubContext<MyHub> hubContext;
+        public TransferController(IUsersService user_Service, IHubContext<MyHub> hubContext)
         {
             userService = user_Service;
+            this.hubContext = hubContext;
         }
         [HttpPost]
-        public IActionResult Index(string from, string to, string content)
+        public async Task<IActionResult> Index(string from, string to, string content)
         {
             User user = userService.Get(to);
             if(user == null)
@@ -45,6 +49,8 @@ namespace ex2.Controllers
             }
             string Date = DateTime.Now.ToString();
             Message message = new Message() { id = nextId, content = content, sent = true, created = Date };
+            contact.messages.Add(message);
+            await hubContext.Clients.All.SendAsync("getNewMessage");
             return StatusCode(201);
         }
         

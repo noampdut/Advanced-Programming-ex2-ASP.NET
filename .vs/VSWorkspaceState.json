@@ -3,8 +3,8 @@
     "",
     "\\ex2",
     "\\ex2\\bin",
-    "\\ex2\\Views\\Rates"
+    "\\ex2\\bin\\Debug"
   ],
-  "SelectedNode": "\\ex2.sln",
+  "SelectedNode": "\\ex2\\Startup.cs",
   "PreviewInSolutionExplorer": false
 }

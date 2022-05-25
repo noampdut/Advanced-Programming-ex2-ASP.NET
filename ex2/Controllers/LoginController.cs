@@ -23,8 +23,9 @@ namespace ex2.Controllers
             bool returnValue = userService.isRegistered(userName, password);
             if (returnValue)
             {
-                userService.setActiveUser(userName);
-                return Json(fixUser(userService.GetActiveUser()));
+                //userService.setActiveUser(userName);
+                User user = userService.Get(userName);
+                return Json(fixUser(user));
             }
             else
             {

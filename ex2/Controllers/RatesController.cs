@@ -16,6 +16,7 @@ namespace ex2.Controllers
         private IRateService rateService;
         private IUsersService userService;
         private float currentRate;
+        private User activeUser;
 
         public RatesController(IUsersService usersService, IRateService ratesService) {
             rateService = ratesService;
@@ -23,7 +24,13 @@ namespace ex2.Controllers
         }
 
         // GET: Rates
-        public IActionResult Index() {
+        public IActionResult Index(string user) {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+            this.activeUser = activeUser;
             List<Rate> rates = rateService.GetAll();
             float rate = 0;
             int numOfRates = rates.Count;
@@ -45,7 +52,7 @@ namespace ex2.Controllers
             return View(rates);
         }
         [HttpPost]
-        public IActionResult Index(string query)
+        public IActionResult Index(string user, string query)
         {
             List<Rate> rates = rateService.GetAll();
             if (rates == null)
@@ -74,7 +81,7 @@ namespace ex2.Controllers
         // GET: Rates/Create
         public IActionResult Create()
         {
-            if (userService.GetActiveUser() == null)
+            if (activeUser == null)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -88,11 +95,11 @@ namespace ex2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(int score, string text)
         {
-            if (userService.GetActiveUser() == null)
+            if (activeUser == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            rateService.Add(text, score, userService.GetActiveUser().Id);
+            rateService.Add(text, score, activeUser.Id);
             return RedirectToAction(nameof(Index));
 
         }
@@ -101,11 +108,11 @@ namespace ex2.Controllers
         public IActionResult Edit(int id)
         {
             Rate rate = rateService.Get(id);
-            if (userService.GetActiveUser() == null)
+            if (activeUser == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            if (rate.UserName == userService.GetActiveUser().Id)
+            if (rate.UserName == activeUser.Id)
             {
                 return View(rateService.Get(id));
             }
@@ -123,11 +130,11 @@ namespace ex2.Controllers
         public IActionResult Edit(int id, [Bind("Score,Text")] Rate rate)
         {
             Rate rate1 = rateService.Get(id);
-            if (userService.GetActiveUser() == null)
+            if (activeUser == null)
             {
                 RedirectToAction(nameof(Index));
             }
-            if (rate1.UserName == userService.GetActiveUser().Id)
+            if (rate1.UserName == activeUser.Id)
             {
                 if (ModelState.IsValid)
                 {
@@ -161,12 +168,12 @@ namespace ex2.Controllers
         // GET: Rates/Delete/5
         public IActionResult Delete(int id)
         {
-            if (userService.GetActiveUser() == null)
+            if (activeUser == null)
             {
                 RedirectToAction(nameof(Index));
             }
             Rate rate = rateService.Get(id);
-            if (rate.UserName == userService.GetActiveUser().Id)
+            if (rate.UserName == activeUser.Id)
             {
                 return View(rateService.Get(id));
             }
@@ -182,11 +189,11 @@ namespace ex2.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             Rate rate = rateService.Get(id);
-            if (userService.GetActiveUser() == null)
+            if (activeUser == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            if (rate.UserName == userService.GetActiveUser().Id)
+            if (rate.UserName == activeUser.Id)
             {
                 rateService.Delete(id);
                 return RedirectToAction(nameof(Index));
