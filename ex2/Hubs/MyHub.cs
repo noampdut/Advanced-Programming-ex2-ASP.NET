@@ -17,5 +17,11 @@ namespace ex2.Hubs
             //await Clients.Client(contact).SendAsync(text);
             await Clients.All.SendAsync("getNewMessage");
         }
+
+        public async Task addContact(string contact)
+        {
+            //await Clients.Client(contact).SendAsync(text);
+            await Clients.All.SendAsync("newContactInList");
+        }
     }
 }
