@@ -10,20 +10,22 @@ namespace ex2.Services
 
         public UsersService()
         {
-            List<Contact> contactList = new List<Contact> { };
+            //List<Contact> contactList = new List<Contact> { };
            // Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
             //List<Message> messages1 = new List<Message>() { message };
             //List<Message> messages2 = new List<Message>() { message };
             //contactList.Add(new Contact { id = "lilach", lastDate = "today", last = "by", name = "lilach", messages = messages1, server = "fds"});
             //contactList.Add(new Contact { id = "ofek", lastDate = "today", last = "by", name = "ofek", messages = messages2, server = "fds"});
             
-            User user1 = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = contactList };
+            User user1 = new User() { Id = "noampdut", NickName = "Noamit", Password = "n123456", Contacts = new List<Contact> { } };
             User user2 = new User() { Id = "ofek", NickName = "ofek", Password = "n123456", Contacts = new List<Contact> { } };
             User user3 = new User() { Id = "naama", NickName = "naama", Password = "n123456", Contacts = new List<Contact> { } };
+            User user4 = new User() { Id = "admin", NickName = "admin", Password = "n123456", Contacts = new List<Contact> { } };
 
             usersList.Add(user1);
             usersList.Add(user2);
             usersList.Add(user3);
+            usersList.Add(user4);
             //acticeUser = user1; 
         }
 
