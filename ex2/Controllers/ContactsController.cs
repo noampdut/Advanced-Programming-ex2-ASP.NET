@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using ex2.Hubs;
 using ex2.Models;
 using ex2.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ex2.Controllers
 {
@@ -15,11 +18,13 @@ namespace ex2.Controllers
         //private User user;
         private IUsersService userService;
         private IContactService contactsService;
+        private IHubContext<MyHub> hubContext;
         //static List<Contact> contactList = new List<Contact> { };
 
-        public ContactsController(IUsersService usersService)
+        public ContactsController(IUsersService usersService, IHubContext<MyHub> hubContext)
         {
             userService = usersService;
+            this.hubContext = hubContext;
             //List<Contact> contactList = new List<Contact> { };
             //Message message = new Message() { id = 1, created = "today", sent = true, content = "yesss" };
             //List<Message> listMessages = new List<Message> { message };
@@ -27,7 +32,7 @@ namespace ex2.Controllers
             //user = new User() { Id = "NoamPdut", NickName = "Noamit", Password = "n123456", Picture = "", Contacts = contactList };
             //userService = new UserService(tempUser);
             //if (userService.GetActiveUser() != null)
-           // {
+            // {
             //    contactsService = new ContactService(userService.GetActiveUser().Contacts);
 
             //}
@@ -75,7 +80,7 @@ namespace ex2.Controllers
         [HttpPost]
         //create new contact
         //api/contacts?userId/contactName/contactNickName/contactServer
-        public IActionResult Create(string user,string id, string name, string server)
+        public async Task<IActionResult> Create(string user,string id, string name, string server)
         {
             User activeUser = userService.Get(user);
             if (activeUser == null)
@@ -86,6 +91,7 @@ namespace ex2.Controllers
             if (contactsService.Get(id) == null && activeUser.Id != id)
             {
                 contactsService.Add(name, id, server);
+                await hubContext.Clients.All.SendAsync("newContactInList");
                 return StatusCode(201);
             }
             return NotFound();
@@ -162,7 +168,7 @@ namespace ex2.Controllers
         }
 
         [HttpPost("{user}/{id}/Messages"), ActionName("Messages")]
-        public IActionResult createMessage(string user, string id, string content)
+        public async Task<IActionResult> createMessage(string user, string id, string content)
         {
             User activeUser = userService.Get(user);
             if (activeUser == null)
@@ -189,6 +195,7 @@ namespace ex2.Controllers
             contact.messages.Add(message);
             contact.last = message.content;
             contact.lastDate = message.created;
+            await hubContext.Clients.All.SendAsync("getNewMessage");
             return StatusCode(201);
         }
 
