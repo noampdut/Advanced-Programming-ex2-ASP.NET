@@ -15,7 +15,7 @@ Ensure the following installations are completed before running the project:
 
 ### Step 1: Clone the Repository
 Clone the ASP.NET project repository from the following link:
-[ASP.NET Project Repository](https://github.com/noampdut/Chat-Project-Server-Side-.NET)
+[ASP.NET Project Repository](https://github.com/noampdut/Chat-Project-Server-Side-.NET-.git)
 
 ### Step 2: Navigate to the Project Directory
 Open a terminal and navigate to the project directory where the `Chat-Project-Server-Side` solution file is located.
