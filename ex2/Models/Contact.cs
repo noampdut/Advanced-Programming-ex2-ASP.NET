@@ -13,7 +13,7 @@ namespace ex2.Models
         public string server { set; get; }
         public string last { set; get; }
         public string lastDate { set; get; }
-        //public string Picture { set; get; }
+        public string Picture { set; get; } = string.Empty;
         public List<Message> messages { set; get; }
     }
 }

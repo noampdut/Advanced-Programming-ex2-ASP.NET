@@ -48,10 +48,10 @@ namespace ex2.Controllers
                 nextId = 1;
             }
             string Date = DateTime.Now.ToString();
-            Message message = new Message() { id = nextId, content = content, sent = true, created = Date };
+            Message message = new Message() { id = nextId, content = content, sent = true, Created = Date };
             contact.messages.Add(message);
             contact.last = message.content;
-            contact.lastDate = message.created;
+            contact.lastDate = message.Created;
 
             await hubContext.Clients.All.SendAsync("getNewMessage");
             return StatusCode(201);

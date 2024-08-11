@@ -25,7 +25,7 @@ namespace ex2.Controllers
             {
                 //userService.setActiveUser(userName);
                 User user = userService.Get(userName);
-                return Json(fixUser(user));
+                return Json(user);
             }
             else
             {

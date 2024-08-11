@@ -6,6 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\uploads\images\AABN9726.JPG" />
+    <Content Remove="wwwroot\uploads\images\AFDH9247.JPG" />
+    <Content Remove="wwwroot\uploads\images\APCU0069.JPG" />
+    <Content Remove="wwwroot\uploads\images\BKRQ7091.JPG" />
+    <Content Remove="wwwroot\uploads\images\BOGR4491 (1).JPG" />
+    <Content Remove="wwwroot\uploads\images\CVZN7845.JPG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\uploads\images\AABN9726.JPG" />
+    <None Include="wwwroot\uploads\images\AFDH9247.JPG" />
+    <None Include="wwwroot\uploads\images\APCU0069.JPG" />
+    <None Include="wwwroot\uploads\images\BKRQ7091.JPG" />
+    <None Include="wwwroot\uploads\images\BOGR4491 (1).JPG" />
+    <None Include="wwwroot\uploads\images\CVZN7845.JPG" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.24" />

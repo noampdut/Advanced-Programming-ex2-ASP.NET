@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ex2.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Register")]
     public class RegisterController : Controller
     {
         private IUsersService userService;
@@ -17,22 +17,35 @@ namespace ex2.Controllers
         {
             userService = user_Service;
         }
+        
         [HttpPost]
-        public IActionResult Index(string userName, string nickName, string pwd)
+        public async Task<IActionResult> Register([FromBody] User request)
         {
-            bool returnValue = userService.isSigned(userName);
-            if (!returnValue)
+            if (request == null)
             {
-                userService.Add(userName, nickName, pwd, "1234");
-                //userService.setActiveUser(userName);
-                User user = userService.Get(userName);
-                return Json(fixUser(user));
+                return BadRequest("Invalid registration data.");
             }
-            else
+
+            if (userService.isSigned(request.Id))
             {
-                return StatusCode(404);
+                return StatusCode(409, "Username is already taken.");
             }
+
+            var user = new User
+            {
+                Id = request.Id,
+                NickName = request.NickName,
+                Password = request.Password, // Ideally, passwords should be hashed and salted
+                Picture = request.Picture,
+                
+            };
+
+            userService.Add(user.Id, user.NickName, user.Password, "1234", user.Picture);
+            return Ok(user);
         }
+
+       
+
         private dynamic fixUser(User user)
         {
             if (user == null)

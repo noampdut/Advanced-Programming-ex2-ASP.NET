@@ -45,9 +45,9 @@ namespace ex2.Services
 
         }
 
-        public void Add(string nickName, string id, string service)
+        public void Add(string nickName, string id, string service, string picture)
         {
-            Contact contact = new Contact() { id = id, last = "", lastDate = "", name = nickName, server = service, messages = new List<Message> { } };
+            Contact contact = new Contact() { id = id, last = "", lastDate = "", name = nickName, server = service, messages = new List<Message> { } , Picture = picture };
             contacts.Add(contact);
         }
 

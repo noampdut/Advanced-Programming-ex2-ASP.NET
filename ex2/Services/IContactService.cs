@@ -12,6 +12,6 @@ namespace ex2.Services
         public Contact Get(string id);
         public void Edit(Contact contact);
         public bool Delete(string id);
-        public void Add(string nickName, string id, string service);
+        public void Add(string nickName, string id, string service, string picture);
     }
 }

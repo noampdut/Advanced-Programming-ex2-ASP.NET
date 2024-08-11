@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ex2.Hubs;
 using ex2.Models;
 using ex2.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -64,14 +67,9 @@ namespace ex2.Controllers
             }
             contactsService = new ContactService(activeUser.Contacts);
             List<Contact> contactsList = contactsService.GetAll();
-            List<dynamic> returnContacts = new List<dynamic> { };
             if (contactsList != null)
             {
-                for (int i = 0; i < contactsList.Count; i++)
-                {
-                    returnContacts.Add(fixContact(contactsList[i]));
-                }
-                return Json(returnContacts);
+                return Json(contactsList);
             }else {
                 return Json(new EmptyResult());
             }    
@@ -90,7 +88,16 @@ namespace ex2.Controllers
             contactsService = new ContactService(activeUser.Contacts);
             if (contactsService.Get(id) == null && activeUser.Id != id)
             {
-                contactsService.Add(name, id, server);
+                var contact_as_user = userService.Get(id);
+                string picture;
+                if (contact_as_user != null)
+                {
+                    picture = contact_as_user.Picture;
+                } else
+                {
+                    picture = string.Empty;
+                }
+                contactsService.Add(name, id, server, picture);
                 await hubContext.Clients.All.SendAsync("newContactInList");
                 return StatusCode(201);
             }
@@ -166,7 +173,7 @@ namespace ex2.Controllers
            // return Json(contact.messages);
             return Json(activeUser.Contacts.Find(x => x.id == id).messages);
         }
-
+        /*
         [HttpPost("{user}/{id}/Messages"), ActionName("Messages")]
         public async Task<IActionResult> createMessage(string user, string id, string content)
         {
@@ -198,6 +205,189 @@ namespace ex2.Controllers
             await hubContext.Clients.All.SendAsync("getNewMessage");
             return StatusCode(201);
         }
+        */
+
+        /*
+                [HttpPost("{user}/{id}/Messages"), ActionName("Messages")]
+                public async Task<IActionResult> createMessage(string user, string id, [FromForm] string content, [FromForm] IFormFile file, [FromForm] IFormFile audio)
+                {
+                    User activeUser = userService.Get(user);
+                    if (activeUser == null)
+                    {
+                        return NotFound();
+                    }
+
+                    contactsService = new ContactService(activeUser.Contacts);
+                    Contact contact = contactsService.Get(id);
+                    if (contact == null)
+                    {
+                        return NotFound();
+                    }
+
+                    string type = "";
+                    // Handle file upload
+                    string filePath = null;
+                    if (file != null)
+                    {
+                        type = "img";
+                        var fileName = Path.GetFileName(file.FileName);
+                        var uploadDir = Path.Combine("uploads", "images");
+
+                        // Ensure the directory exists
+                        if (!Directory.Exists(uploadDir))
+                        {
+                            Directory.CreateDirectory(uploadDir);
+                        }
+
+                        filePath = Path.Combine(uploadDir, fileName);
+                        filePath = Path.GetFullPath(filePath); // Ensure the path is fully qualified
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Log or debug the file path to see where it is being saved
+                        Console.WriteLine($"File saved to: {filePath}");
+                    }
+
+
+                    // Handle audio upload
+                    string audioPath = null;
+                    if (audio != null)
+                    {
+                        type = "audio";
+                        var audioName = Path.GetFileName(audio.FileName);
+                        audioPath = Path.Combine("uploads", "audio", audioName);
+
+                        using (var stream = new FileStream(audioPath, FileMode.Create))
+                        {
+                            await audio.CopyToAsync(stream);
+                        }
+                    }
+
+                    // Create the message
+                    string date = DateTime.Now.ToString();
+                    int nextId = contact.messages.Any() ? contact.messages.Max(x => x.id) + 1 : 1;
+                    if (type == "")
+                    {
+                        type = "text";
+                    }
+                    Message message = new Message()
+                    {
+                        id = nextId,
+                        content = content,
+                        FilePath = filePath,
+                        AudioPath = audioPath,
+                        Created = date,
+                        sent = false,
+                        Type = type
+                    };
+
+                    contact.messages.Add(message);
+                    contact.last = message.content;
+                    contact.lastDate = message.Created;
+
+                    await hubContext.Clients.All.SendAsync("getNewMessage");
+
+                    return StatusCode(201);
+                }
+                */
+
+
+        [HttpPost("{user}/{id}/Messages"), ActionName("Messages")]
+        public async Task<IActionResult> createMessage(string user, string id, [FromForm] string content, [FromForm] IFormFile file, [FromForm] IFormFile audio)
+        {
+            User activeUser = userService.Get(user);
+            if (activeUser == null)
+            {
+                return NotFound();
+            }
+
+            contactsService = new ContactService(activeUser.Contacts);
+            Contact contact = contactsService.Get(id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            string type = "";
+            // Handle file upload
+            string filePath = null;
+            if (file != null)
+            {
+                type = "img";
+                var fileName = Path.GetFileName(file.FileName);
+                var uploadDir = Path.Combine("wwwroot", "uploads", "images");
+
+                // Ensure the directory exists
+                if (!Directory.Exists(uploadDir))
+                {
+                    Directory.CreateDirectory(uploadDir);
+                }
+
+                filePath = Path.Combine(uploadDir, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Generate a URL for the file
+                filePath = $"/uploads/images/{fileName}";
+            }
+
+            // Handle audio upload
+            string audioPath = null;
+            if (audio != null)
+            {
+                type = "audio";
+                var audioName = Path.GetFileName(audio.FileName);
+                var audioDir = Path.Combine("wwwroot", "uploads", "audio");
+
+                if (!Directory.Exists(audioDir))
+                {
+                    Directory.CreateDirectory(audioDir);
+                }
+
+                audioPath = Path.Combine(audioDir, audioName);
+
+                using (var stream = new FileStream(audioPath, FileMode.Create))
+                {
+                    await audio.CopyToAsync(stream);
+                }
+
+                // Generate a URL for the audio file
+                audioPath = $"/uploads/audio/{audioName}";
+            }
+
+            // Create the message
+            string date = DateTime.Now.ToString();
+            int nextId = contact.messages.Any() ? contact.messages.Max(x => x.id) + 1 : 1;
+            if (type == "")
+            {
+                type = "text";
+            }
+            Message message = new Message()
+            {
+                id = nextId,
+                content = content,
+                FilePath = filePath,
+                AudioPath = audioPath,
+                Created = date,
+                sent = false,
+                Type = type
+            };
+
+            contact.messages.Add(message);
+            contact.last = message.content;
+            contact.lastDate = message.Created;
+
+            await hubContext.Clients.All.SendAsync("getNewMessage");
+
+            return StatusCode(201);
+        }
+
 
         // Get: api/contacts/id/messages/id2
         [HttpGet("{user}/{id1}/Messages/{id2}"), ActionName("Messages")]
@@ -242,7 +432,7 @@ namespace ex2.Controllers
                 if (message != null)
                 {
                     message.content = content;
-                    message.created = DateTime.Now.ToString();
+                    message.Created = DateTime.Now.ToString();
                     return StatusCode(204);
                 }
                 else
